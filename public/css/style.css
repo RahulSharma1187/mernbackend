@@ -1,0 +1,19 @@
+body{
+    font-family: Arial, Helvetica, sans-serif;
+}
+h2{ color: red;}
+header{
+    display: flex;
+    justify-content: space-between;
+}
+header ul{
+    display: flex;
+}
+header ul li{
+    font-size: 18px;
+    margin-right: 30px;
+
+}
+header ul li a{
+    color: green;
+}

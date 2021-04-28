@@ -1,0 +1,26 @@
+{{>header}}
+{{>navbar}}
+<div class="container">
+    <div class="col-sm-6 col-md-4 mx-auto">
+        <h2 class="text-center login-title my-5">Employee Login Form</h2>
+        <div class="account-wall">
+            <form class="form-signin" action="/login" method="POST">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Email" required name="email">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" placeholder="Password" required name="password">
+                </div>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign In</button>
+                <label class="checkbox pull-left mt-3">
+                    <input type="checkbox" value="remember-me">
+                    Remember me
+                </label>
+                <a href="#" class="pull-right need-help">Need help?</a>
+                <span class="clearfix"></span>
+            </form>
+        </div>
+        <a href="/register" class="text-center new account">Create an account</a>
+    </div>
+</div>
+{{>footer}}
