@@ -4,6 +4,8 @@ const path = require("path");
 const app = express();
 const hbs = require("hbs");
 const bcrypt = require("bcryptjs");
+const cookieParser = require("cookie-parser");
+const auth = require("./middleware/auth");
 
 require("./db/connention");
 const Register = require("./models/registers");
@@ -19,6 +21,7 @@ const template_path = path.join(__dirname, "../templates/views");
 const partials_path = path.join(__dirname, "../templates/partials");
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({extended:false}));
 
 app.set('view engine', "hbs");
@@ -30,6 +33,29 @@ hbs.registerPartials(partials_path);
 app.get('/', (req, res) => {
     //res.send("hello from the rahul")
     res.render('index');
+});
+
+app.get('/secret', auth , (req, res) => {
+    //console.log(`this is the cookies awesome ${req.cookies.jwt}`)
+    res.render('secret');
+});
+
+app.get('/logout', auth , async (req, res) => {
+    try{
+        // for single logout
+        /*req.user.tokens = req.user.tokens.filter((currElement) => {
+            return currElement.token !== req.token
+        });*/
+
+        // logout from all devices
+        req.user.tokens = [];
+
+        res.clearCookie("jwt");
+        await req.user.save();
+        res.render('login');
+    } catch(error){
+        res.send(error);
+    }
 });
 
 app.get('/register', (req, res) => {
@@ -58,8 +84,14 @@ app.post('/register', async (req, res) => {
 
             const token = await registerEmployee.generateAuthToken();
             console.log(`the token part ${token}`);
-            // password hash
+           
+            // set cookie
+            res.cookie("jwt", token, {
+                expires: new Date(Date.now() + 600000),
+                httpOnly: true
+            });
 
+            // password hash
            const registered = await registerEmployee.save();
            res.status(201).render("index");
 
@@ -89,6 +121,13 @@ app.post('/login', async(req, res) => {
 
         const token = await useremail.generateAuthToken();
         console.log(`the token part ${token}`);
+        
+        // set cookie
+        res.cookie("jwt", token, {
+            expires: new Date(Date.now() + 600000),
+            httpOnly: true
+        });
+
         
 
         if(isMatch){

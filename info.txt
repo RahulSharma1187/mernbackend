@@ -1,0 +1,27 @@
+project start :- node src/app.js
+
+project need software:
+mogodb compass
+
+this project url is:-
+http://localhost:3000/register
+
+Project dependencies:-
+bcryptjs
+cookie-parser
+dotenv
+express
+hbs
+jsonwebtoken
+mongoose
+nodemon
+
+In Src folder has 3 folder:
+db > connection.js(database connection)
+models > register.js (define schema , generateAuthToken and hash-Password)
+middleware > auth.js
+
+
+one is template folder has 2 folder:
+partials > common file like header, footer and nav
+views > all files like index, about, contact etc
